@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>B481 Streckennavigator Emsdetten — Baustelle 2026 | Guía Tecnológico</title>
+<meta name="description" content="Navigiere clever durch die B481-Baustelle zwischen Emsdetten und Greven. GPS-Standort, intelligente Umleitungen, 3 Sprachen. Kostenlos und ohne App-Installation.">
+<meta name="author" content="Pablo Churín — Guía Tecnológico">
+
+<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://guiatecnologico.com/apps/b481-navigator/">
+<meta property="og:title" content="B481 Streckennavigator Emsdetten — Kein Stau überraschend">
+<meta property="og:description" content="Navigiere clever durch die B481-Baustelle zwischen Emsdetten und Greven. GPS-Standort, intelligente Umleitungen, 3 Sprachen. Kostenlos und ohne App-Installation.">
+<meta property="og:image" content="https://guiatecnologico.com/apps/b481-navigator/b481-cover-1200x630.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="B481 Streckennavigator Emsdetten — Baustelle 2026, Vollsperrung ab Sommer">
+<meta property="og:locale" content="de_DE">
+<meta property="og:site_name" content="Guía Tecnológico">
+<meta property="fb:app_id" content="966242223397117">
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta property="twitter:domain" content="guiatecnologico.com">
+<meta property="twitter:url" content="https://guiatecnologico.com/apps/b481-navigator/">
+<meta name="twitter:title" content="B481 Streckennavigator Emsdetten — Kein Stau überraschend">
+<meta name="twitter:description" content="Navigiere clever durch die B481-Baustelle zwischen Emsdetten und Greven. GPS-Standort, intelligente Umleitungen, 3 Sprachen. Kostenlos.">
+<meta name="twitter:image" content="https://guiatecnologico.com/apps/b481-navigator/b481-cover-1200x630.jpg">
+<meta name="twitter:image:alt" content="B481 Streckennavigator Emsdetten — Baustelle 2026">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:     #0d1018;
+  --bg2:    #161a24;
+  --bg3:    #1d2130;
+  --bg4:    #242840;
+  --amber:  #f5a623;
+  --amber2: #ffc85e;
+  --teal:   #2dd4aa;
+  --teal2:  #1a8c72;
+  --red:    #e85555;
+  --green:  #4cbe7a;
+  --blue:   #5b9cf6;
+  --text:   #eae6da;
+  --muted:  #7a7670;
+  --border: rgba(245,166,35,0.18);
+  --border2:rgba(255,255,255,0.07);
+  --r:      10px;
+  --r2:     14px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+body{font-family:'Syne',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:60px;}
+
+/* ─── HEADER ─── */
+header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:200;}
+.logo-img{width:28px;height:28px;border-radius:50%;object-fit:cover;border:1px solid var(--border);}
+.header-info{flex:1;}
+.header-info h1{font-size:14px;font-weight:700;color:var(--amber);line-height:1.2;}
+.header-info p{font-size:10px;color:var(--muted);margin-top:1px;}
+.lang-btn{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:600;color:var(--amber);cursor:pointer;font-family:'Syne',sans-serif;transition:background .2s;}
+.lang-btn:hover{background:var(--bg4);}
+.admin-icon{font-size:16px;cursor:pointer;color:var(--muted);padding:4px;border-radius:6px;transition:color .2s;}
+.admin-icon:hover{color:var(--amber);}
+
+/* ─── ALERT BANNER ─── */
+#alert-banner{margin:12px 16px;border-radius:var(--r);padding:11px 14px;display:flex;gap:10px;align-items:flex-start;font-size:12px;line-height:1.55;border:1px solid;transition:all .3s;}
+#alert-banner.ok{background:rgba(76,190,122,.09);border-color:rgba(76,190,122,.3);}
+#alert-banner.p1{background:rgba(232,85,85,.11);border-color:rgba(232,85,85,.4);}
+#alert-banner.p2{background:rgba(245,166,35,.1);border-color:rgba(245,166,35,.35);}
+.alert-ico{font-size:17px;flex-shrink:0;margin-top:1px;}
+.alert-title{font-weight:700;font-size:13px;}
+.alert-sub{font-size:11px;opacity:.85;margin-top:2px;}
+.ok .alert-title,.ok .alert-sub{color:var(--green);}
+.p1 .alert-title,.p1 .alert-sub{color:var(--red);}
+.p2 .alert-title,.p2 .alert-sub{color:var(--amber);}
+
+/* ─── SECTION ─── */
+.sec{padding:0 16px;margin-top:16px;}
+.sec-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:6px;}
+
+/* ─── ORIGIN BOX ─── */
+.origin-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;display:flex;align-items:center;gap:10px;}
+.origin-box .pin{font-size:17px;flex-shrink:0;}
+.origin-main{flex:1;}
+.origin-name{font-size:14px;font-weight:600;color:var(--amber);}
+.origin-addr{font-size:11px;color:var(--muted);margin-top:1px;}
+.btn-edit{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--muted);cursor:pointer;font-family:'Syne',sans-serif;transition:all .2s;flex-shrink:0;}
+.btn-edit:hover{color:var(--amber);border-color:var(--amber);}
+
+/* ORIGIN SETUP */
+#origin-setup{margin-top:8px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);padding:12px;}
+.geo-btn{width:100%;background:var(--bg4);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-size:13px;font-weight:600;font-family:'Syne',sans-serif;color:var(--teal);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:background .2s;margin-bottom:10px;}
+.geo-btn:hover{background:rgba(45,212,170,.12);}
+.geo-btn:disabled{opacity:.5;cursor:not-allowed;}
+.geo-divider{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.geo-divider span{font-size:11px;color:var(--muted);white-space:nowrap;}
+.geo-divider:before,.geo-divider:after{content:'';flex:1;height:1px;background:var(--border2);}
+#origin-setup input{width:100%;background:var(--bg2);border:1px solid var(--border2);border-radius:7px;padding:9px 12px;font-size:13px;font-family:'Syne',sans-serif;color:var(--text);outline:none;margin-bottom:8px;}
+#origin-setup input:focus{border-color:var(--amber);}
+.editor-btns{display:flex;gap:8px;}
+.btn-save{flex:1;background:var(--amber);color:#1a0e00;border:none;border-radius:7px;padding:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;}
+.btn-cancel{background:none;border:1px solid var(--border2);border-radius:7px;padding:8px 14px;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Syne',sans-serif;}
+#geo-status{font-size:11px;margin-bottom:8px;padding:7px 10px;border-radius:7px;display:none;line-height:1.4;}
+#geo-status.loading{background:rgba(91,156,246,.1);color:var(--blue);display:block;}
+#geo-status.err{background:rgba(232,85,85,.1);color:var(--red);display:block;}
+#geo-status.ok{background:rgba(76,190,122,.1);color:var(--green);display:block;}
+
+/* ─── TRANSPORT MODE ─── */
+.mode-row{display:flex;gap:6px;margin-top:8px;}
+.mode-btn{flex:1;background:var(--bg2);border:1px solid var(--border2);border-radius:8px;padding:7px 4px;font-size:18px;text-align:center;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;}
+.mode-btn.active{background:var(--bg3);border-color:var(--amber);border-bottom-color:var(--amber);}
+.mode-label{display:block;font-size:9px;color:var(--muted);margin-top:2px;font-weight:600;letter-spacing:.5px;}
+.mode-btn.active .mode-label{color:var(--amber);}
+
+/* ─── AVOID HIGHWAYS ─── */
+.options-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.toggle-label{font-size:12px;color:var(--muted);flex:1;}
+.toggle-wrap{position:relative;width:38px;height:21px;flex-shrink:0;}
+.toggle-wrap input{opacity:0;width:0;height:0;position:absolute;}
+.toggle-slider{position:absolute;inset:0;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;cursor:pointer;transition:background .2s;}
+.toggle-slider:before{content:'';position:absolute;width:15px;height:15px;background:var(--muted);border-radius:50%;top:2px;left:2px;transition:all .2s;}
+.toggle-wrap input:checked+.toggle-slider{background:rgba(245,166,35,.2);border-color:var(--amber);}
+.toggle-wrap input:checked+.toggle-slider:before{background:var(--amber);left:19px;}
+
+/* ─── DEST INPUT ─── */
+.input-row{display:flex;gap:8px;margin-top:6px;}
+.dest-input{flex:1;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:11px 14px;font-size:14px;font-family:'Syne',sans-serif;color:var(--text);outline:none;transition:border-color .2s;}
+.dest-input:focus{border-color:var(--amber);}
+.dest-input::placeholder{color:var(--muted);}
+.btn-add{background:var(--amber);color:#1a0e00;border:none;border-radius:var(--r);padding:0 18px;font-size:22px;cursor:pointer;font-weight:700;transition:background .2s;flex-shrink:0;}
+.btn-add:hover{background:var(--amber2);}
+
+/* ─── DEST LIST ─── */
+#dest-list{margin-top:10px;display:flex;flex-direction:column;gap:7px;}
+.dest-item{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--r);padding:10px 12px;display:flex;align-items:center;gap:9px;animation:slideIn .2s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.dest-num{width:22px;height:22px;border-radius:50%;background:rgba(45,212,170,.12);color:var(--teal);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.dest-name{flex:1;font-size:13px;line-height:1.3;}
+.dest-actions{display:flex;gap:5px;align-items:center;}
+.btn-go{background:var(--teal);color:#04342c;border:none;border-radius:7px;padding:5px 11px;font-size:11px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;white-space:nowrap;transition:background .2s;}
+.btn-go:hover{background:#40e6c4;}
+.btn-share{background:rgba(91,156,246,.15);border:none;border-radius:7px;padding:5px 10px;font-size:14px;cursor:pointer;transition:background .2s;}
+.btn-share:hover{background:rgba(91,156,246,.3);}
+.btn-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:15px;padding:3px 5px;border-radius:4px;transition:color .2s;}
+.btn-del:hover{color:var(--red);}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:22px 0;color:var(--muted);font-size:13px;}
+.empty-icon{font-size:30px;display:block;margin-bottom:7px;}
+
+/* ─── FULL ROUTE ─── */
+.btn-full{width:100%;margin-top:10px;background:var(--amber);color:#1a0e00;border:none;border-radius:var(--r);padding:14px;font-size:15px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s;}
+.btn-full:hover{opacity:.88;}
+.btn-full:disabled{opacity:.3;cursor:not-allowed;}
+
+/* ─── OBRAS CARD ─── */
+.obras-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-top:14px;}
+.obras-hdr{padding:11px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
+.obras-hdr span{flex:1;font-size:13px;font-weight:600;color:var(--amber);}
+.obras-chevron{font-size:11px;color:var(--muted);transition:transform .25s;}
+.obras-chevron.open{transform:rotate(180deg);}
+.obras-body{padding:0 14px 14px;display:none;}
+.obras-body.open{display:block;}
+.phase-row{display:flex;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:12px;line-height:1.5;}
+.phase-row:last-child{border-bottom:none;}
+.phase-tag{padding:2px 8px;border-radius:5px;font-size:10px;font-weight:700;flex-shrink:0;align-self:flex-start;margin-top:2px;}
+.tag-r{background:rgba(232,85,85,.18);color:var(--red);}
+.tag-a{background:rgba(245,166,35,.18);color:var(--amber);}
+.tag-g{background:rgba(76,190,122,.18);color:var(--green);}
+.phase-txt{color:var(--muted);}
+.phase-txt strong{color:var(--text);}
+.desvio{margin-top:10px;background:rgba(45,212,170,.08);border:1px solid rgba(45,212,170,.2);border-radius:8px;padding:9px 12px;font-size:12px;color:var(--teal);line-height:1.6;}
+.btn-official{display:block;width:100%;margin-top:10px;background:none;border:1px solid var(--border);border-radius:var(--r);padding:10px;color:var(--amber);font-size:12px;text-align:center;cursor:pointer;font-family:'Syne',sans-serif;text-decoration:none;transition:background .2s;}
+.btn-official:hover{background:rgba(245,166,35,.07);}
+
+/* ─── ADMIN MODAL ─── */
+#admin-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:999;align-items:center;justify-content:center;padding:20px;}
+#admin-overlay.open{display:flex;}
+#admin-modal{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);padding:20px;width:100%;max-width:400px;}
+#admin-modal h2{font-size:15px;font-weight:700;color:var(--amber);margin-bottom:4px;}
+#admin-modal p{font-size:12px;color:var(--muted);margin-bottom:14px;}
+.admin-field{margin-bottom:12px;}
+.admin-field label{font-size:11px;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:1px;}
+.admin-field input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:9px 12px;font-size:13px;font-family:'JetBrains Mono',monospace;color:var(--text);outline:none;}
+.admin-field input:focus{border-color:var(--amber);}
+.admin-field input.err{border-color:var(--red);}
+.admin-btns{display:flex;gap:8px;margin-top:16px;}
+.btn-admin-save{flex:1;background:var(--amber);color:#1a0e00;border:none;border-radius:8px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;}
+.btn-admin-cancel{background:none;border:1px solid var(--border2);border-radius:8px;padding:10px 16px;font-size:13px;color:var(--muted);cursor:pointer;font-family:'Syne',sans-serif;}
+.admin-saved{font-size:11px;color:var(--green);margin-top:8px;display:none;text-align:center;}
+
+/* ─── FOOTER ─── */
+footer{text-align:center;padding:18px 16px 0;font-size:11px;color:var(--muted);}
+footer a{color:var(--amber);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <img class="logo-img" src="https://guiatecnologico.com/apps/Logo-GT.png" alt="GT" onerror="this.style.display='none'">
+  <div class="header-info">
+    <h1 id="h-title">Navegador B481</h1>
+    <p id="h-sub">Emsdetten · Obras 2026</p>
+  </div>
+  <button class="lang-btn" onclick="nextLang()">🌐 <span id="lang-label">ES</span></button>
+  <span class="admin-icon" onclick="openAdmin()" title="Admin">⚙</span>
+</header>
+
+<!-- ALERT BANNER -->
+<div id="alert-banner" class="ok">
+  <div class="alert-ico" id="a-ico">✓</div>
+  <div>
+    <div class="alert-title" id="a-title">Sin obras activas</div>
+    <div class="alert-sub" id="a-sub">La B481 está operativa normalmente.</div>
+  </div>
+</div>
+
+<!-- ORIGIN -->
+<div class="sec">
+  <div class="sec-label" id="lbl-origin">Punto de inicio</div>
+
+  <!-- box shown once origin is set -->
+  <div class="origin-box" id="origin-box" style="display:none;">
+    <span class="pin">📍</span>
+    <div class="origin-main">
+      <div class="origin-name" id="origin-display"></div>
+      <div class="origin-addr" id="origin-addr"></div>
+    </div>
+    <button class="btn-edit" id="btn-edit-origin" onclick="openOriginSetup()">✎ <span id="lbl-change">Cambiar</span></button>
+  </div>
+
+  <!-- setup panel: always visible until origin confirmed -->
+  <div id="origin-setup">
+    <button class="geo-btn" id="btn-geo" onclick="useGeolocation()">
+      <span id="geo-ico">📡</span> <span id="lbl-geo">Usar mi ubicación actual</span>
+    </button>
+    <div id="geo-status"></div>
+    <div class="geo-divider"><span id="lbl-or">— o escribí la dirección —</span></div>
+    <input type="text" id="origin-input" autocomplete="off">
+    <div class="editor-btns">
+      <button class="btn-save" id="btn-save-origin" onclick="saveOrigin()">✓ Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TRANSPORT MODE -->
+<div class="sec">
+  <div class="sec-label" id="lbl-mode">Modo de transporte</div>
+  <div class="mode-row">
+    <div class="mode-btn active" id="mode-driving" onclick="setMode('driving')">🚗<span class="mode-label" id="ml-car">Auto</span></div>
+    <div class="mode-btn" id="mode-bicycling" onclick="setMode('bicycling')">🚲<span class="mode-label" id="ml-bike">Bici</span></div>
+    <div class="mode-btn" id="mode-transit" onclick="setMode('transit')">🚌<span class="mode-label" id="ml-transit">Bus/Tren</span></div>
+    <div class="mode-btn" id="mode-walking" onclick="setMode('walking')">🚶<span class="mode-label" id="ml-walk">A pie</span></div>
+  </div>
+  <div class="options-row" id="highway-row">
+    <span class="toggle-label" id="lbl-avoid">Evitar autopistas</span>
+    <label class="toggle-wrap">
+      <input type="checkbox" id="avoid-highways">
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+</div>
+
+<!-- DESTINOS -->
+<div class="sec">
+  <div class="sec-label" id="lbl-dest">Agregar destino</div>
+  <div class="input-row">
+    <input class="dest-input" id="dest-input" type="text" autocomplete="off" autocorrect="off">
+    <button class="btn-add" onclick="addDest()">+</button>
+  </div>
+  <div id="dest-list">
+    <div class="empty-state">
+      <span class="empty-icon">🗺</span>
+      <span id="lbl-empty">Agregá destinos para generar rutas</span>
+    </div>
+  </div>
+  <button class="btn-full" id="btn-full-route" onclick="navigateFull()" disabled>
+    <span id="btn-full-ico">🚗</span> <span id="btn-full-txt">Navegar ruta completa</span>
+  </button>
+</div>
+
+<!-- OBRAS INFO -->
+<div class="sec">
+  <div class="sec-label" id="lbl-obras-sec">Estado de obras B481</div>
+  <div class="obras-card">
+    <div class="obras-hdr" onclick="toggleObras()">
+      <span id="obras-hdr-txt">🚧 Proyecto — Greven / Emsdetten</span>
+      <span class="obras-chevron" id="obras-chevron">▼</span>
+    </div>
+    <div class="obras-body" id="obras-body">
+      <div class="phase-row">
+        <span class="phase-tag tag-r" id="tag-p1">FASE 1</span>
+        <div class="phase-txt" id="obras-p1-txt">
+          <strong>Cierre total</strong> — Desde vacaciones de verano 2026 (~julio) durante <strong>10 semanas</strong>.<br>
+          Tramo: cruce B219 (Greven) → Emsdetten. Sin paso en ambos sentidos.
+        </div>
+      </div>
+      <div class="phase-row">
+        <span class="phase-tag tag-a" id="tag-p2">FASE 2</span>
+        <div class="phase-txt" id="obras-p2-txt">
+          <strong>Sentido único</strong> — Tras las 10 semanas: solo circulación <em>hacia Emsdetten</em>.<br>
+          Tráfico hacia Greven sigue desviado.
+        </div>
+      </div>
+      <div class="phase-row">
+        <span class="phase-tag tag-g" id="tag-fin">FINAL</span>
+        <div class="phase-txt" id="obras-fin-txt">
+          <strong>Vía 2+1</strong> — Tres carriles alternos para mayor capacidad y seguridad vial.
+        </div>
+      </div>
+      <div class="desvio" id="desvio-txt">
+        🔄 <strong>Desvío oficial:</strong> B219 → B475 vía Saerbeck.<br>
+        Tiempo estimado hacia Greven con desvío: <strong>~25–30 min</strong> (vs. 10–12 min normal).
+      </div>
+      <a class="btn-official" id="btn-strassen"
+        href="https://www.strassen.nrw.de/de/b481-ersatzneubau-von-drei-bauwerken-und-fahrbahnsanierung-zwischen-greven-und-emsdetten-projektueberblick.html"
+        target="_blank">🔗 Ver estado oficial en Straßen.NRW →</a>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <p><a href="https://guiatecnologico.com" target="_blank">Guía Tecnológico</a> · Pablo Churín</p>
+  <p style="margin-top:4px;font-size:10px;" id="footer-note">Rutas vía Google Maps. Verificá siempre el estado oficial de obras.</p>
+</footer>
+
+<!-- ADMIN MODAL -->
+<div id="admin-overlay">
+  <div id="admin-modal">
+    <h2>⚙ Panel de administración</h2>
+    <p id="admin-sub">Actualizá las fechas de obras sin tocar el código. Protegido con contraseña.</p>
+    <div id="admin-login">
+      <div class="admin-field">
+        <label id="admin-pwd-lbl">Contraseña</label>
+        <input type="password" id="admin-pwd" placeholder="••••••••">
+      </div>
+      <div class="admin-btns">
+        <button class="btn-admin-save" onclick="checkAdminPwd()">Ingresar →</button>
+        <button class="btn-admin-cancel" onclick="closeAdmin()">Cancelar</button>
+      </div>
+      <div id="admin-err" style="font-size:11px;color:var(--red);margin-top:8px;display:none;"></div>
+    </div>
+    <div id="admin-panel" style="display:none;">
+      <div class="admin-field">
+        <label>Inicio Fase 1 (cierre total)</label>
+        <input type="date" id="adm-p1-start">
+      </div>
+      <div class="admin-field">
+        <label>Fin Fase 1 / Inicio Fase 2</label>
+        <input type="date" id="adm-p1-end">
+      </div>
+      <div class="admin-field">
+        <label>Fin Fase 2 (obras finalizadas)</label>
+        <input type="date" id="adm-p2-end">
+      </div>
+      <div class="admin-btns">
+        <button class="btn-admin-save" onclick="saveAdminDates()">💾 Fechas speichern</button>
+        <button class="btn-admin-cancel" onclick="resetAdminDates()" style="color:var(--red);border-color:rgba(232,85,85,0.3);">↺ Reset</button>
+      </div>
+      <div class="admin-saved" id="admin-saved">✓ Fechas actualizadas</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   TRADUCCIONES
+═══════════════════════════════════════════════ */
+const langs = ['es','de','en'];
+let langIdx = 1;
+const T = {
+  es:{
+    'h-title':'Navegador B481','h-sub':'Emsdetten · Obras 2026',
+    'lbl-origin':'Punto de inicio','lbl-change':'Cambiar',
+    'lbl-mode':'Modo de transporte','lbl-avoid':'Evitar autopistas',
+    'ml-car':'Auto','ml-bike':'Bici','ml-transit':'Bus/Tren','ml-walk':'A pie',
+    'lbl-dest':'Agregar destino','dest-ph':'Ej: Greven, Münster, Saerbeck...',
+    'lbl-empty':'Agregá destinos para generar rutas',
+    'btn-full-txt':'Navegar ruta completa',
+    'lbl-obras-sec':'Estado de obras B481',
+    'obras-hdr-txt':'🚧 Proyecto — Greven / Emsdetten',
+    'tag-p1':'FASE 1','tag-p2':'FASE 2','tag-fin':'FINAL',
+    'obras-p1-txt':'<strong>Cierre total</strong> — Desde verano 2026 (~julio) durante <strong>10 semanas</strong>.<br>Tramo: cruce B219 (Greven) → Emsdetten.',
+    'obras-p2-txt':'<strong>Sentido único</strong> — Solo circulación <em>hacia Emsdetten</em>. Greven sigue desviado.',
+    'obras-fin-txt':'<strong>Vía 2+1</strong> — Tres carriles alternos para mayor capacidad.',
+    'desvio-txt':'🔄 <strong>Desvío oficial:</strong> B219 → B475 vía Saerbeck.<br>Tiempo hacia Greven con desvío: <strong>~25–30 min</strong> (normal: 10–12 min).',
+    'btn-strassen':'🔗 Ver estado oficial en Straßen.NRW →',
+    'footer-note':'Rutas vía Google Maps. Verificá siempre el estado oficial de obras.',
+    'go-btn':'IR','share-btn':'📤',
+    'alert-ok-t':'Sin obras activas','alert-ok-s':'La B481 está operativa normalmente.',
+    'alert-p1-t':'CIERRE TOTAL — B481 cortada','alert-p1-s':'Desvío: B219 → B475 vía Saerbeck. Aprox. +15–20 min extra.',
+    'alert-p2-t':'OBRAS FASE 2 — Solo hacia Emsdetten','alert-p2-s':'Hacia Greven: desvío por B219/B475 vía Saerbeck.',
+    'share-msg':'Ruta desde {o} hacia {d}',
+    'admin-sub':'Actualizá las fechas de obras sin tocar el código.',
+    'admin-pwd-lbl':'Contraseña','admin-saved':'✓ Fechas actualizadas',
+    'admin-err':'Contraseña incorrecta',
+    'btn-save-origin':'✓ Guardar','origin-ph':'Dirección completa...',
+    'lbl-geo':'Usar mi ubicación actual','lbl-or':'— o escribí la dirección —',
+    'geo-loading':'Obteniendo ubicación...','geo-current':'Mi ubicación',
+    'geo-denied':'Permiso denegado. Escribí la dirección manualmente.',
+    'geo-unavail':'Ubicación no disponible. Intentá más tarde.',
+    'geo-timeout':'Tiempo agotado. Intentá de nuevo.',
+    'geo-error':'Error al obtener ubicación.','geo-no-support':'Tu navegador no soporta geolocalización.'
+  },
+  de:{
+    'h-title':'B481-Navigator','h-sub':'Emsdetten · Baustelle 2026',
+    'lbl-origin':'Startpunkt','lbl-change':'Ändern',
+    'lbl-mode':'Verkehrsmittel','lbl-avoid':'Autobahn vermeiden',
+    'ml-car':'Auto','ml-bike':'Rad','ml-transit':'Bus/Bahn','ml-walk':'Fuß',
+    'lbl-dest':'Ziel hinzufügen','dest-ph':'z. B. Greven, Münster, Saerbeck...',
+    'lbl-empty':'Ziele hinzufügen um Routen zu erstellen',
+    'btn-full-txt':'Gesamtroute navigieren',
+    'lbl-obras-sec':'Baustelle B481 Status',
+    'obras-hdr-txt':'🚧 Projekt — Greven / Emsdetten',
+    'tag-p1':'PHASE 1','tag-p2':'PHASE 2','tag-fin':'FERTIG',
+    'obras-p1-txt':'<strong>Vollsperrung</strong> — Ab Sommer 2026 (~Juli) für <strong>10 Wochen</strong>.<br>Abschnitt: B219-Kreuzung (Greven) → Emsdetten.',
+    'obras-p2-txt':'<strong>Einbahnstraße</strong> — Nur Richtung Emsdetten. Greven weiterhin umgeleitet.',
+    'obras-fin-txt':'<strong>2+1-Fahrbahn</strong> — Drei Wechselspuren für höhere Kapazität.',
+    'desvio-txt':'🔄 <strong>Offizielle Umleitung:</strong> B219 → B475 über Saerbeck.<br>Zeit nach Greven mit Umleitung: <strong>~25–30 Min.</strong> (normal: 10–12 Min.).',
+    'btn-strassen':'🔗 Offizieller Status bei Straßen.NRW →',
+    'footer-note':'Routen über Google Maps. Bitte stets offiziellen Status prüfen.',
+    'go-btn':'LOS','share-btn':'📤',
+    'alert-ok-t':'Keine aktive Baustelle','alert-ok-s':'Die B481 ist normal befahrbar.',
+    'alert-p1-t':'VOLLSPERRUNG — B481 gesperrt','alert-p1-s':'Umleitung: B219 → B475 über Saerbeck. Ca. +15–20 Min. mehr.',
+    'alert-p2-t':'BAUSTELLE PHASE 2 — Nur Richtung Emsdetten','alert-p2-s':'Richtung Greven: Umleitung über B219/B475 via Saerbeck.',
+    'share-msg':'Route von {o} nach {d}',
+    'admin-sub':'Baudaten aktualisieren ohne Code-Änderung.',
+    'admin-pwd-lbl':'Passwort','admin-saved':'✓ Daten gespeichert',
+    'admin-err':'Falsches Passwort',
+    'btn-save-origin':'✓ Speichern','origin-ph':'Vollständige Adresse...',
+    'lbl-geo':'Meinen Standort verwenden','lbl-or':'— oder Adresse eingeben —',
+    'geo-loading':'Standort wird ermittelt...','geo-current':'Mein Standort',
+    'geo-denied':'Zugriff verweigert. Bitte Adresse eingeben.',
+    'geo-unavail':'Standort nicht verfügbar. Später erneut versuchen.',
+    'geo-timeout':'Zeitüberschreitung. Erneut versuchen.',
+    'geo-error':'Standortfehler.','geo-no-support':'Dein Browser unterstützt keine Geolokalisierung.'
+  },
+  en:{
+    'h-title':'B481 Navigator','h-sub':'Emsdetten · Roadworks 2026',
+    'lbl-origin':'Starting point','lbl-change':'Change',
+    'lbl-mode':'Transport mode','lbl-avoid':'Avoid motorways',
+    'ml-car':'Car','ml-bike':'Bike','ml-transit':'Bus/Train','ml-walk':'Walk',
+    'lbl-dest':'Add destination','dest-ph':'e.g. Greven, Münster, Saerbeck...',
+    'lbl-empty':'Add destinations to generate routes',
+    'btn-full-txt':'Navigate full route',
+    'lbl-obras-sec':'B481 Roadworks Status',
+    'obras-hdr-txt':'🚧 Project — Greven / Emsdetten',
+    'tag-p1':'PHASE 1','tag-p2':'PHASE 2','tag-fin':'COMPLETE',
+    'obras-p1-txt':'<strong>Full closure</strong> — From summer 2026 (~July) for <strong>10 weeks</strong>.<br>Section: B219 junction (Greven) → Emsdetten.',
+    'obras-p2-txt':'<strong>One-way only</strong> — Towards Emsdetten only. Greven still diverted.',
+    'obras-fin-txt':'<strong>2+1 road</strong> — Three alternating lanes for higher capacity.',
+    'desvio-txt':'🔄 <strong>Official diversion:</strong> B219 → B475 via Saerbeck.<br>Estimated time to Greven via diversion: <strong>~25–30 min</strong> (normal: 10–12 min).',
+    'btn-strassen':'🔗 Official status at Straßen.NRW →',
+    'footer-note':'Routes via Google Maps. Always verify the official roadworks status.',
+    'go-btn':'GO','share-btn':'📤',
+    'alert-ok-t':'No active roadworks','alert-ok-s':'The B481 is operating normally.',
+    'alert-p1-t':'FULL CLOSURE — B481 blocked','alert-p1-s':'Diversion: B219 → B475 via Saerbeck. Approx. +15–20 extra min.',
+    'alert-p2-t':'ROADWORKS PHASE 2 — Towards Emsdetten only','alert-p2-s':'Towards Greven: diversion via B219/B475 via Saerbeck.',
+    'share-msg':'Route from {o} to {d}',
+    'admin-sub':'Update roadwork dates without editing code.',
+    'admin-pwd-lbl':'Password','admin-saved':'✓ Dates updated',
+    'admin-err':'Wrong password',
+    'btn-save-origin':'✓ Save','origin-ph':'Full address...',
+    'lbl-geo':'Use my current location','lbl-or':'— or type the address —',
+    'geo-loading':'Getting location...','geo-current':'My location',
+    'geo-denied':'Permission denied. Please type your address.',
+    'geo-unavail':'Location unavailable. Try again later.',
+    'geo-timeout':'Request timed out. Try again.',
+    'geo-error':'Location error.','geo-no-support':'Your browser does not support geolocation.'
+  }
+};
+
+function t(k){ return T[langs[langIdx]][k] || k; }
+
+function applyLang(){
+  const l = langs[langIdx];
+  document.documentElement.lang = l;
+  document.getElementById('lang-label').textContent = l.toUpperCase();
+  const ids = ['h-title','h-sub','lbl-origin','lbl-change','lbl-mode','lbl-avoid',
+    'ml-car','ml-bike','ml-transit','ml-walk','lbl-dest','lbl-empty','btn-full-txt',
+    'lbl-obras-sec','obras-hdr-txt','tag-p1','tag-p2','tag-fin',
+    'btn-strassen','footer-note','admin-sub','admin-pwd-lbl','admin-saved','btn-save-origin',
+    'lbl-geo','lbl-or'];
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.textContent = t(id);
+  });
+  const htmlIds = ['obras-p1-txt','obras-p2-txt','obras-fin-txt','desvio-txt'];
+  htmlIds.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.innerHTML = t(id);
+  });
+  document.getElementById('dest-input').placeholder = t('dest-ph');
+  document.getElementById('origin-input').placeholder = t('origin-ph');
+  document.getElementById('btn-full-ico').textContent = currentMode === 'bicycling' ? '🚲' : currentMode === 'transit' ? '🚌' : currentMode === 'walking' ? '🚶' : '🚗';
+  updateAlert();
+  renderList();
+}
+
+function nextLang(){
+  langIdx = (langIdx + 1) % langs.length;
+  applyLang();
+}
+
+/* ═══════════════════════════════════════════════
+   OBRAS DATES (configurable by admin)
+═══════════════════════════════════════════════ */
+let obrasConfig = {
+  p1Start: '2026-07-04',
+  p1End:   '2026-09-12',
+  p2End:   '2027-03-01'
+};
+
+// Cargar fechas guardadas por el admin (persisten entre recargas)
+(function(){
+  try {
+    const saved = localStorage.getItem('b481_obras');
+    if(saved){
+      const parsed = JSON.parse(saved);
+      if(parsed.p1Start) obrasConfig.p1Start = parsed.p1Start;
+      if(parsed.p1End)   obrasConfig.p1End   = parsed.p1End;
+      if(parsed.p2End)   obrasConfig.p2End   = parsed.p2End;
+    }
+  } catch(e){}
+})();
+
+function getPhase(){
+  const now = new Date();
+  const p1s = new Date(obrasConfig.p1Start);
+  const p1e = new Date(obrasConfig.p1End);
+  const p2e = new Date(obrasConfig.p2End);
+  if(now >= p1s && now < p1e) return 1;
+  if(now >= p1e && now < p2e) return 2;
+  return 0;
+}
+
+function updateAlert(){
+  const phase = getPhase();
+  const banner = document.getElementById('alert-banner');
+  const ico = document.getElementById('a-ico');
+  const title = document.getElementById('a-title');
+  const sub = document.getElementById('a-sub');
+  if(phase===1){
+    banner.className='p1'; ico.textContent='✕';
+    title.textContent=t('alert-p1-t'); sub.textContent=t('alert-p1-s');
+  } else if(phase===2){
+    banner.className='p2'; ico.textContent='⚠';
+    title.textContent=t('alert-p2-t'); sub.textContent=t('alert-p2-s');
+  } else {
+    banner.className='ok'; ico.textContent='✓';
+    title.textContent=t('alert-ok-t'); sub.textContent=t('alert-ok-s');
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   ORIGIN — geolocation + manual entry
+═══════════════════════════════════════════════ */
+let originAddr = '';
+let originLabel = '';
+let originSub = '';
+let originIsGeo = false; // true = lat,lng coords stored
+
+function openOriginSetup(){
+  document.getElementById('origin-box').style.display = 'none';
+  document.getElementById('origin-setup').style.display = 'block';
+  document.getElementById('geo-status').className = '';
+  document.getElementById('geo-status').style.display = 'none';
+  document.getElementById('origin-input').value = originIsGeo ? '' : originAddr;
+}
+
+function setOriginDisplay(label, sub){
+  document.getElementById('origin-display').textContent = label;
+  document.getElementById('origin-addr').textContent = sub;
+  document.getElementById('origin-box').style.display = 'flex';
+  document.getElementById('origin-setup').style.display = 'none';
+}
+
+function saveOrigin(){
+  const val = document.getElementById('origin-input').value.trim();
+  if(!val) return;
+  originAddr = val;
+  originIsGeo = false;
+  const parts = val.split(',');
+  originLabel = parts[0].trim();
+  originSub = parts.slice(1).join(',').trim() || val;
+  setOriginDisplay(originLabel, originSub);
+}
+
+function useGeolocation(){
+  if(!navigator.geolocation){
+    showGeoStatus('err', t('geo-no-support')); return;
+  }
+  const btn = document.getElementById('btn-geo');
+  btn.disabled = true;
+  showGeoStatus('loading', t('geo-loading'));
+
+  navigator.geolocation.getCurrentPosition(
+    pos => {
+      const lat = pos.coords.latitude.toFixed(6);
+      const lng = pos.coords.longitude.toFixed(6);
+      originAddr = `${lat},${lng}`;
+      originIsGeo = true;
+
+      // Reverse geocode via nominatim (free, no API key needed)
+      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=${langs[langIdx]}`)
+        .then(r => r.json())
+        .then(data => {
+          const a = data.address || {};
+          const road = a.road || a.pedestrian || a.street || '';
+          const house = a.house_number || '';
+          const city = a.city || a.town || a.village || a.municipality || '';
+          const postcode = a.postcode || '';
+          originLabel = road + (house ? ' ' + house : '') || t('geo-current');
+          originSub = (postcode ? postcode + ' ' : '') + city;
+          if(!originLabel.trim()) originLabel = t('geo-current');
+          showGeoStatus('ok', `📍 ${originLabel}${originSub ? ', ' + originSub : ''}`);
+          setTimeout(() => setOriginDisplay(originLabel, originSub || `${lat}, ${lng}`), 900);
+        })
+        .catch(() => {
+          // fallback: show raw coords
+          originLabel = t('geo-current');
+          originSub = `${lat}, ${lng}`;
+          showGeoStatus('ok', `📍 ${lat}, ${lng}`);
+          setTimeout(() => setOriginDisplay(originLabel, originSub), 900);
+        });
+      btn.disabled = false;
+    },
+    err => {
+      btn.disabled = false;
+      const msgs = { 1: t('geo-denied'), 2: t('geo-unavail'), 3: t('geo-timeout') };
+      showGeoStatus('err', msgs[err.code] || t('geo-error'));
+    },
+    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+  );
+}
+
+function showGeoStatus(cls, msg){
+  const el = document.getElementById('geo-status');
+  el.className = cls;
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+document.getElementById('origin-input').addEventListener('keydown', e => { if(e.key==='Enter') saveOrigin(); });
+
+/* ═══════════════════════════════════════════════
+   TRANSPORT MODE
+═══════════════════════════════════════════════ */
+let currentMode = 'driving';
+function setMode(m){
+  currentMode = m;
+  ['driving','bicycling','transit','walking'].forEach(mo=>{
+    document.getElementById('mode-'+mo).classList.toggle('active', mo===m);
+  });
+  const hwRow = document.getElementById('highway-row');
+  hwRow.style.display = (m==='driving') ? 'flex' : 'none';
+  const ico = m==='bicycling'?'🚲':m==='transit'?'🚌':m==='walking'?'🚶':'🚗';
+  document.getElementById('btn-full-ico').textContent = ico;
+}
+
+/* ═══════════════════════════════════════════════
+   DESTINATIONS
+═══════════════════════════════════════════════ */
+let dests = [];
+
+function addDest(){
+  const inp = document.getElementById('dest-input');
+  const v = inp.value.trim();
+  if(!v) return;
+  dests.push(v);
+  inp.value = '';
+  renderList();
+  inp.focus();
+}
+document.getElementById('dest-input').addEventListener('keydown', e=>{ if(e.key==='Enter') addDest(); });
+
+function removeDest(i){ dests.splice(i,1); renderList(); }
+
+function renderList(){
+  const list = document.getElementById('dest-list');
+  const btn = document.getElementById('btn-full-route');
+  if(dests.length===0){
+    list.innerHTML = `<div class="empty-state"><span class="empty-icon">🗺</span><span>${t('lbl-empty')}</span></div>`;
+    btn.disabled = true;
+    return;
+  }
+  btn.disabled = false;
+  list.innerHTML = dests.map((d,i)=>`
+    <div class="dest-item">
+      <div class="dest-num">${i+1}</div>
+      <div class="dest-name">${esc(d)}</div>
+      <div class="dest-actions">
+        <button class="btn-go" onclick="navigateTo(${i})">${t('go-btn')}</button>
+        <button class="btn-share" onclick="shareRoute(${i})" title="Compartir">${t('share-btn')}</button>
+        <button class="btn-del" onclick="removeDest(${i})">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function buildUrl(dest){
+  const origin = encodeURIComponent(originAddr);
+  const destination = encodeURIComponent(dest);
+  const avoid = document.getElementById('avoid-highways').checked ? '&avoid=highways' : '';
+  let url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}&travelmode=${currentMode}${avoid}`;
+  const phase = getPhase();
+  if((phase===1||phase===2) && currentMode==='driving'){
+    const dl = dest.toLowerCase();
+    const south = ['greven','münster','munster','telgte','warendorf','drensteinfurt'].some(k=>dl.includes(k));
+    if(south) url += `&waypoints=${encodeURIComponent('Saerbeck, Germany')}`;
+  }
+  return url;
+}
+
+function navigateTo(i){ window.open(buildUrl(dests[i]),'_blank'); }
+
+function navigateFull(){
+  if(dests.length===0) return;
+  if(dests.length===1){ navigateTo(0); return; }
+  const origin = encodeURIComponent(originAddr);
+  const last = encodeURIComponent(dests[dests.length-1]);
+  const mid = dests.slice(0,-1).map(d=>encodeURIComponent(d)).join('|');
+  const avoid = document.getElementById('avoid-highways').checked ? '&avoid=highways' : '';
+  const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${last}&waypoints=${mid}&travelmode=${currentMode}${avoid}`;
+  window.open(url,'_blank');
+}
+
+function shareRoute(i){
+  const dest = dests[i];
+  const url = buildUrl(dest);
+  const msg = t('share-msg').replace('{o}', originLabel).replace('{d}', dest);
+  const shareText = `${msg}\n${url}`;
+  if(navigator.share){
+    navigator.share({ title: t('h-title'), text: msg, url: url }).catch(()=>{});
+  } else {
+    const wa = `https://wa.me/?text=${encodeURIComponent(shareText)}`;
+    window.open(wa,'_blank');
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   OBRAS COLLAPSIBLE
+═══════════════════════════════════════════════ */
+function toggleObras(){
+  document.getElementById('obras-body').classList.toggle('open');
+  document.getElementById('obras-chevron').classList.toggle('open');
+}
+
+/* ═══════════════════════════════════════════════
+   ADMIN PANEL
+═══════════════════════════════════════════════ */
+const ADMIN_PWD = 'GT2026admin';
+
+function openAdmin(){
+  document.getElementById('admin-overlay').classList.add('open');
+  document.getElementById('admin-login').style.display = 'block';
+  document.getElementById('admin-panel').style.display = 'none';
+  document.getElementById('admin-err').style.display = 'none';
+  document.getElementById('admin-pwd').value = '';
+}
+
+function closeAdmin(){
+  document.getElementById('admin-overlay').classList.remove('open');
+}
+
+function checkAdminPwd(){
+  const v = document.getElementById('admin-pwd').value;
+  if(v === ADMIN_PWD){
+    document.getElementById('admin-login').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'block';
+    document.getElementById('adm-p1-start').value = obrasConfig.p1Start;
+    document.getElementById('adm-p1-end').value = obrasConfig.p1End;
+    document.getElementById('adm-p2-end').value = obrasConfig.p2End;
+  } else {
+    const err = document.getElementById('admin-err');
+    err.textContent = t('admin-err');
+    err.style.display = 'block';
+    document.getElementById('admin-pwd').classList.add('err');
+    setTimeout(()=>{ document.getElementById('admin-pwd').classList.remove('err'); }, 1000);
+  }
+}
+
+function resetAdminDates(){
+  try { localStorage.removeItem('b481_obras'); } catch(e){}
+  obrasConfig = { p1Start:'2026-07-04', p1End:'2026-09-12', p2End:'2027-03-01' };
+  document.getElementById('adm-p1-start').value = obrasConfig.p1Start;
+  document.getElementById('adm-p1-end').value   = obrasConfig.p1End;
+  document.getElementById('adm-p2-end').value   = obrasConfig.p2End;
+  updateAlert();
+  const saved = document.getElementById('admin-saved');
+  saved.textContent = '↺ Fechas restablecidas';
+  saved.style.display = 'block';
+  setTimeout(()=>{ saved.style.display='none'; saved.textContent=t('admin-saved'); closeAdmin(); }, 1500);
+}
+
+function saveAdminDates(){
+  obrasConfig.p1Start = document.getElementById('adm-p1-start').value;
+  obrasConfig.p1End = document.getElementById('adm-p1-end').value;
+  obrasConfig.p2End = document.getElementById('adm-p2-end').value;
+  // Persistir en localStorage para que sobreviva recargas y caché
+  try { localStorage.setItem('b481_obras', JSON.stringify(obrasConfig)); } catch(e){}
+  updateAlert();
+  const saved = document.getElementById('admin-saved');
+  saved.style.display = 'block';
+  setTimeout(()=>{ saved.style.display='none'; closeAdmin(); }, 1500);
+}
+
+document.getElementById('admin-overlay').addEventListener('click', function(e){
+  if(e.target === this) closeAdmin();
+});
+
+document.getElementById('admin-pwd').addEventListener('keydown', e=>{ if(e.key==='Enter') checkAdminPwd(); });
+
+/* ═══ INIT ═══ */
+applyLang();
+</script>
+</body>
+</html>
