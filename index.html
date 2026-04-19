@@ -181,45 +181,67 @@ header{background:var(--azul);border-bottom:4px solid var(--amber);padding:12px 
 #alt-routes{display:none;}
 #btn-full-wrap{display:block;}
 
-/* Ruta oficial — verde sólido */
+/* Ruta oficial — grande, barra lateral verde */
 .route-official{
   width:100%;margin-top:10px;
-  background:var(--verde);color:#ffffff;
-  border:none;border-radius:var(--r);padding:0;
+  background:var(--bg2);color:var(--text);
+  border:1px solid var(--border);border-radius:var(--r);padding:0;
   cursor:pointer;font-family:'Syne',sans-serif;
-  overflow:hidden;transition:opacity .2s;
-  box-shadow:0 2px 8px rgba(39,128,62,0.25);
+  overflow:hidden;transition:all .2s;
+  border-left:5px solid var(--verde);
+  display:flex;align-items:stretch;
+  box-shadow:0 2px 8px rgba(39,128,62,0.10);
 }
-.route-official:hover{opacity:.9;}
-.route-official-inner{display:flex;align-items:center;gap:12px;padding:15px 16px;}
-.route-official-icon{font-size:22px;flex-shrink:0;}
+.route-official:hover{background:var(--verde-l);border-color:var(--verde);}
+.route-official-bar{
+  width:5px;background:var(--verde);flex-shrink:0;
+}
+.route-official-inner{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;flex:1;
+}
+.route-official-badge{
+  background:var(--verde);color:#fff;
+  font-size:10px;font-weight:800;
+  padding:3px 9px;border-radius:20px;
+  letter-spacing:.5px;white-space:nowrap;
+  flex-shrink:0;
+}
 .route-official-info{flex:1;text-align:left;}
-.route-official-name{font-size:15px;font-weight:800;line-height:1.2;}
-.route-official-desc{font-size:11px;font-weight:400;opacity:.85;margin-top:3px;}
-.route-official-km{font-size:13px;font-weight:700;flex-shrink:0;}
+.route-official-name{font-size:14px;font-weight:800;color:var(--verde);line-height:1.2;}
+.route-official-desc{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
+.route-official-km{font-size:13px;font-weight:800;color:var(--verde);flex-shrink:0;}
 
-/* Alternativas — más pequeñas */
-.alt-routes-row{display:flex;gap:7px;margin-top:7px;}
+/* Alternativas — misma estructura, apiladas, más compactas */
+.alt-routes-col{display:flex;flex-direction:column;gap:7px;margin-top:7px;}
 .route-alt{
-  flex:1;background:var(--bg2);
-  border:2px solid var(--border);border-radius:var(--r);
-  padding:12px 11px;cursor:pointer;
+  width:100%;background:var(--bg2);
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:0;cursor:pointer;
   font-family:'Syne',sans-serif;
   text-align:left;transition:all .2s;
+  display:flex;align-items:stretch;
+  overflow:hidden;
 }
-.route-alt.amber-card{border-color:var(--naranja);}
-.route-alt.orange-card{border-color:#c0640a;}
-.route-alt:hover{background:var(--bg3);}
-.route-alt-header{display:flex;align-items:center;gap:7px;margin-bottom:6px;}
-.route-alt-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
-.dot-amber{background:var(--naranja);}
-.dot-orange{background:#c0640a;}
-.route-alt-km-badge{margin-left:auto;font-size:12px;font-weight:800;padding:2px 7px;border-radius:5px;}
-.amber-badge{background:var(--nar-l);color:var(--naranja);}
-.orange-badge{background:#fff0e0;color:#c0640a;}
-.route-alt-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.3;}
-.route-alt-via{font-size:11px;color:var(--muted);margin-top:3px;line-height:1.4;}
-.route-alt-tag{font-size:10px;margin-top:6px;line-height:1.4;padding:4px 7px;border-radius:5px;}
+.route-alt.amber-card{border-left:5px solid var(--naranja);}
+.route-alt.orange-card{border-left:5px solid #c0640a;}
+.route-alt:hover{background:var(--nar-l);}
+.route-alt.orange-card:hover{background:#fff5ea;}
+.route-alt-inner{display:flex;align-items:center;gap:12px;padding:11px 14px;flex:1;}
+.route-alt-badge{
+  font-size:10px;font-weight:800;
+  padding:3px 9px;border-radius:20px;
+  letter-spacing:.5px;white-space:nowrap;
+  flex-shrink:0;
+}
+.amber-badge{background:var(--nar-l);color:var(--naranja);border:1px solid var(--naranja);}
+.orange-badge{background:#fff0e0;color:#c0640a;border:1px solid #c0640a;}
+.route-alt-info{flex:1;}
+.route-alt-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.2;}
+.route-alt-via{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.route-alt-km{font-size:12px;font-weight:800;flex-shrink:0;}
+.amber-km{color:var(--naranja);}
+.orange-km{color:#c0640a;}
+.route-alt-tag{font-size:10px;margin-top:4px;padding:3px 7px;border-radius:4px;display:inline-block;}
 .amber-tag{background:var(--nar-l);color:var(--naranja);}
 .orange-tag{background:#fff0e0;color:#c0640a;}
 
@@ -354,36 +376,41 @@ footer a{color:var(--azul);text-decoration:none;font-weight:600;}
 
   <!-- RUTAS ALTERNATIVAS — reemplaza botón amarillo durante obras -->
   <div id="alt-routes">
-    <!-- Ruta oficial — grande -->
+    <!-- Ruta oficial — barra verde izquierda -->
     <button class="route-official" onclick="openAltRoute('saerbeck')">
       <div class="route-official-inner">
-        <span class="route-official-icon">🟢</span>
+        <span class="route-official-badge">OFFIZIELL</span>
         <div class="route-official-info">
           <div class="route-official-name" id="alt1-name">Offizielle Route — via Saerbeck</div>
           <div class="route-official-desc" id="alt1-desc">B219 → B475. Empfohlen für alle Fahrzeuge und LKW.</div>
+          <div class="route-alt-tag" style="background:var(--verde-l);color:var(--verde);margin-top:5px;display:inline-block;padding:3px 7px;border-radius:4px;font-size:10px;" id="alt1-tag">Zuverlässig, auch bei Stau</div>
         </div>
         <span class="route-official-km">~22 km →</span>
       </div>
     </button>
-    <!-- Alternativas — pequeñas en fila -->
-    <div class="alt-routes-row">
+    <!-- Alternativas apiladas verticalmente -->
+    <div class="alt-routes-col">
       <button class="route-alt amber-card" onclick="openAltRoute('reckenfeld')">
-        <div class="route-alt-header">
-          <div class="route-alt-dot dot-amber"></div>
-          <div class="route-alt-name" id="alt2-name">Westen — Reckenfeld</div>
-          <span class="route-alt-km-badge amber-badge">~14 km</span>
+        <div class="route-alt-inner">
+          <span class="route-alt-badge amber-badge">WESTEN</span>
+          <div class="route-alt-info">
+            <div class="route-alt-name" id="alt2-name">Via Reckenfeld</div>
+            <div class="route-alt-via" id="alt2-desc">L590 → B219 Greven</div>
+            <div class="route-alt-tag amber-tag" id="alt2-tag">Wohngebiet 30/50 km/h</div>
+          </div>
+          <span class="route-alt-km amber-km">~14 km →</span>
         </div>
-        <div class="route-alt-via" id="alt2-desc">L590 → B219 Greven</div>
-        <div class="route-alt-tag amber-tag" id="alt2-tag">Wohngebiet 30/50 km/h</div>
       </button>
       <button class="route-alt orange-card" onclick="openAltRoute('schmedehausen')">
-        <div class="route-alt-header">
-          <div class="route-alt-dot dot-orange"></div>
-          <div class="route-alt-name" id="alt3-name">Osten — Schmedehausen</div>
-          <span class="route-alt-km-badge orange-badge">~18 km</span>
+        <div class="route-alt-inner">
+          <span class="route-alt-badge orange-badge">OSTEN</span>
+          <div class="route-alt-info">
+            <div class="route-alt-name" id="alt3-name">Via Schmedehausen</div>
+            <div class="route-alt-via" id="alt3-desc">Emsdettener Damm → L588</div>
+            <div class="route-alt-tag orange-tag" id="alt3-tag">Ruhig, enge Straßen</div>
+          </div>
+          <span class="route-alt-km orange-km">~18 km →</span>
         </div>
-        <div class="route-alt-via" id="alt3-desc">Emsdettener Damm → L588</div>
-        <div class="route-alt-tag orange-tag" id="alt3-tag">Ruhig, enge Straßen</div>
       </button>
     </div>
   </div>
