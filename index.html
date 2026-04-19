@@ -162,19 +162,43 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 
 /* ─── RUTAS ALTERNATIVAS ─── */
 #alt-routes{display:none;}
-.alt-routes-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-top:8px;}
-.alt-route-item{padding:11px 14px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px;}
-.alt-route-item:last-child{border-bottom:none;}
-.alt-route-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
-.dot-green{background:var(--green);}
+#btn-full-wrap{display:block;}
+
+/* Ruta oficial — grande y prominente */
+.route-official{
+  width:100%;margin-top:10px;
+  background:var(--amber);color:#1a0e00;
+  border:none;border-radius:var(--r);padding:0;
+  cursor:pointer;font-family:'Syne',sans-serif;
+  overflow:hidden;transition:opacity .2s;
+}
+.route-official:hover{opacity:.88;}
+.route-official-inner{
+  display:flex;align-items:center;gap:12px;padding:14px 16px;
+}
+.route-official-icon{font-size:22px;flex-shrink:0;}
+.route-official-info{flex:1;text-align:left;}
+.route-official-name{font-size:15px;font-weight:800;line-height:1.2;}
+.route-official-desc{font-size:11px;font-weight:400;opacity:.75;margin-top:2px;}
+.route-official-km{font-size:13px;font-weight:700;flex-shrink:0;opacity:.85;}
+
+/* Alternativas — más pequeñas */
+.alt-routes-row{display:flex;gap:7px;margin-top:7px;}
+.route-alt{
+  flex:1;background:var(--bg2);
+  border:1px solid var(--border2);border-radius:var(--r);
+  padding:10px 10px;cursor:pointer;
+  font-family:'Syne',sans-serif;
+  text-align:left;transition:all .2s;
+}
+.route-alt:hover{background:var(--bg3);border-color:var(--border);}
+.route-alt-dot{width:8px;height:8px;border-radius:50%;margin-bottom:6px;}
 .dot-amber{background:var(--amber);}
 .dot-orange{background:#e8943a;}
-.alt-route-info{flex:1;}
-.alt-route-name{font-size:13px;font-weight:600;color:var(--text);}
-.alt-route-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;}
-.alt-route-meta{font-size:10px;margin-top:3px;}
-.btn-alt-go{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--teal);cursor:pointer;font-family:'Syne',sans-serif;white-space:nowrap;transition:all .2s;flex-shrink:0;}
-.btn-alt-go:hover{background:var(--bg4);border-color:var(--teal);}
+.route-alt-name{font-size:12px;font-weight:700;color:var(--text);line-height:1.3;}
+.route-alt-via{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.route-alt-km{font-size:11px;font-weight:700;margin-top:5px;}
+.route-alt-tag{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3;}
 .obras-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-top:14px;}
 .obras-hdr{padding:11px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
 .obras-hdr span{flex:1;font-size:13px;font-weight:600;color:var(--amber);}
@@ -296,46 +320,43 @@ footer a{color:var(--amber);text-decoration:none;}
       <span id="lbl-empty">Agregá destinos para generar rutas</span>
     </div>
   </div>
-  <button class="btn-full" id="btn-full-route" onclick="navigateFull()" disabled>
-    <span id="btn-full-ico">🚗</span> <span id="btn-full-txt">Navegar ruta completa</span>
-  </button>
-</div>
+  <!-- BOTÓN RUTA COMPLETA — visible cuando NO hay obras -->
+  <div id="btn-full-wrap">
+    <button class="btn-full" id="btn-full-route" onclick="navigateFull()" disabled>
+      <span id="btn-full-ico">🚗</span> <span id="btn-full-txt">Navegar ruta completa</span>
+    </button>
+  </div>
 
-<!-- RUTAS ALTERNATIVAS — solo visible durante obras -->
-<div class="sec" id="alt-routes">
-  <div class="sec-label" id="lbl-alt-sec">Umleitung wählen</div>
-  <div class="alt-routes-card">
-
-    <div class="alt-route-item">
-      <div class="alt-route-dot dot-green"></div>
-      <div class="alt-route-info">
-        <div class="alt-route-name" id="alt1-name">🟢 Offizielle Route — via Saerbeck</div>
-        <div class="alt-route-desc" id="alt1-desc">B219 → B475. Empfohlen für alle Fahrzeuge und LKW.</div>
-        <div class="alt-route-meta"><span style="color:var(--green);">~22 km</span> &nbsp;·&nbsp; <span style="color:var(--muted);" id="alt1-tag">Zuverlässig, auch bei Stau</span></div>
+  <!-- RUTAS ALTERNATIVAS — reemplaza botón amarillo durante obras -->
+  <div id="alt-routes">
+    <!-- Ruta oficial — grande -->
+    <button class="route-official" onclick="openAltRoute('saerbeck')">
+      <div class="route-official-inner">
+        <span class="route-official-icon">🟢</span>
+        <div class="route-official-info">
+          <div class="route-official-name" id="alt1-name">Offizielle Route — via Saerbeck</div>
+          <div class="route-official-desc" id="alt1-desc">B219 → B475. Empfohlen für alle Fahrzeuge und LKW.</div>
+        </div>
+        <span class="route-official-km">~22 km →</span>
       </div>
-      <button class="btn-alt-go" onclick="openAltRoute('saerbeck')">→ Maps</button>
+    </button>
+    <!-- Alternativas — pequeñas en fila -->
+    <div class="alt-routes-row">
+      <button class="route-alt" onclick="openAltRoute('reckenfeld')">
+        <div class="route-alt-dot dot-amber"></div>
+        <div class="route-alt-name" id="alt2-name">Westen — Reckenfeld</div>
+        <div class="route-alt-via" id="alt2-desc">L590 → B219 Greven</div>
+        <div class="route-alt-km" style="color:var(--amber);">~14 km</div>
+        <div class="route-alt-tag" id="alt2-tag">Wohngebiet 30/50 km/h</div>
+      </button>
+      <button class="route-alt" onclick="openAltRoute('schmedehausen')">
+        <div class="route-alt-dot dot-orange"></div>
+        <div class="route-alt-name" id="alt3-name">Osten — Schmedehausen</div>
+        <div class="route-alt-via" id="alt3-desc">Emsdettener Damm → L588</div>
+        <div class="route-alt-km" style="color:#e8943a;">~18 km</div>
+        <div class="route-alt-tag" id="alt3-tag">Ruhig, enge Straßen</div>
+      </button>
     </div>
-
-    <div class="alt-route-item">
-      <div class="alt-route-dot dot-amber"></div>
-      <div class="alt-route-info">
-        <div class="alt-route-name" id="alt2-name">🟡 Westen — via Reckenfeld</div>
-        <div class="alt-route-desc" id="alt2-desc">L590 durch Reckenfeld → B219 Greven.</div>
-        <div class="alt-route-meta"><span style="color:var(--amber);">~14 km</span> &nbsp;·&nbsp; <span style="color:var(--muted);" id="alt2-tag">Kürzer, aber Wohngebiet (30/50 km/h)</span></div>
-      </div>
-      <button class="btn-alt-go" onclick="openAltRoute('reckenfeld')">→ Maps</button>
-    </div>
-
-    <div class="alt-route-item">
-      <div class="alt-route-dot dot-orange"></div>
-      <div class="alt-route-info">
-        <div class="alt-route-name" id="alt3-name">🟠 Osten — via Schmedehausen</div>
-        <div class="alt-route-desc" id="alt3-desc">Emsdettener Damm → L588 Schmedehausen → Greven.</div>
-        <div class="alt-route-meta"><span style="color:#e8943a;">~18 km</span> &nbsp;·&nbsp; <span style="color:var(--muted);" id="alt3-tag">Ruhig, enge Straßen, kein Nebel</span></div>
-      </div>
-      <button class="btn-alt-go" onclick="openAltRoute('schmedehausen')">→ Maps</button>
-    </div>
-
   </div>
 </div>
 
@@ -614,18 +635,19 @@ function updateAlert(){
   const title = document.getElementById('a-title');
   const sub = document.getElementById('a-sub');
   const altRoutes = document.getElementById('alt-routes');
+  const btnWrap   = document.getElementById('btn-full-wrap');
   if(phase===1){
     banner.className='p1'; ico.textContent='✕';
     title.textContent=t('alert-p1-t'); sub.textContent=t('alert-p1-s');
-    altRoutes.style.display='block';
+    altRoutes.style.display='block'; if(btnWrap) btnWrap.style.display='none';
   } else if(phase===2){
     banner.className='p2'; ico.textContent='⚠';
     title.textContent=t('alert-p2-t'); sub.textContent=t('alert-p2-s');
-    altRoutes.style.display='block';
+    altRoutes.style.display='block'; if(btnWrap) btnWrap.style.display='none';
   } else {
     banner.className='ok'; ico.textContent='✓';
     title.textContent=t('alert-ok-t'); sub.textContent=t('alert-ok-s');
-    altRoutes.style.display='none';
+    altRoutes.style.display='none'; if(btnWrap) btnWrap.style.display='block';
   }
 }
 
