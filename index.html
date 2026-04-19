@@ -172,10 +172,41 @@ header{background:var(--azul);border-bottom:4px solid var(--amber);padding:12px 
 .empty-state{text-align:center;padding:22px 0;color:var(--muted);font-size:13px;}
 .empty-icon{font-size:30px;display:block;margin-bottom:7px;}
 
-/* ─── FULL ROUTE ─── */
+/* ─── FULL ROUTE (sin obras) ─── */
 .btn-full{width:100%;margin-top:10px;background:var(--azul);color:#ffffff;border:none;border-radius:var(--r);padding:14px;font-size:15px;font-weight:700;font-family:'Syne',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .2s;}
 .btn-full:hover{opacity:.88;}
 .btn-full:disabled{opacity:.3;cursor:not-allowed;}
+
+/* ─── BOTÓN NAVEGAR PRINCIPAL ─── */
+.btn-nav-main{
+  width:100%;
+  background:var(--azul);color:#ffffff;
+  border:none;border-radius:var(--r);
+  padding:16px;
+  font-size:17px;font-weight:800;
+  font-family:'Syne',sans-serif;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:opacity .2s;
+  box-shadow:0 3px 10px rgba(31,78,140,0.25);
+}
+.btn-nav-main:hover{opacity:.88;}
+
+/* ─── BOTÓN COMPARTIR SECUNDARIO ─── */
+.btn-nav-share{
+  width:100%;margin-top:8px;
+  background:none;
+  border:2px solid var(--azul);
+  color:var(--azul);
+  border-radius:var(--r);
+  padding:10px;
+  font-size:13px;font-weight:700;
+  font-family:'Syne',sans-serif;
+  cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;
+}
+.btn-nav-share:hover{background:var(--azul-l);}
 
 /* ─── RUTAS ALTERNATIVAS ─── */
 #alt-routes{display:none;}
@@ -335,10 +366,20 @@ footer a{color:var(--azul);text-decoration:none;font-weight:600;}
       <span id="lbl-empty">Agregá destinos para generar rutas</span>
     </div>
   </div>
-  <!-- BOTÓN RUTA COMPLETA — visible cuando NO hay obras -->
+  <!-- BOTÓN NAVEGAR + COMPARTIR — visible cuando hay destinos -->
   <div id="btn-full-wrap">
     <button class="btn-full" id="btn-full-route" onclick="navigateFull()" disabled>
       <span id="btn-full-ico">🚗</span> <span id="btn-full-txt">Navegar ruta completa</span>
+    </button>
+  </div>
+
+  <!-- BLOQUE ACCIÓN PRINCIPAL — visible cuando hay destinos y NO hay obras -->
+  <div id="nav-action-wrap" style="display:none; margin-top:10px;">
+    <button class="btn-nav-main" onclick="navigateFull()">
+      🚗 <span id="btn-nav-lbl">Jetzt navigieren</span>
+    </button>
+    <button class="btn-nav-share" id="btn-share-main" onclick="shareRoute(0)">
+      📤 <span id="btn-share-lbl">Route teilen</span>
     </button>
   </div>
 
@@ -470,6 +511,7 @@ const T = {
     'lbl-dest':'Agregar destino','dest-ph':'Ej: Greven, Münster, Saerbeck...',
     'lbl-empty':'Agregá destinos para generar rutas',
     'btn-full-txt':'Navegar ruta completa',
+    'btn-nav-lbl':'Navegar ahora','share-btn-lbl':'Compartir ruta',
     'lbl-obras-sec':'Estado de obras B481',
     'obras-hdr-txt':'🚧 Proyecto — Greven / Emsdetten',
     'tag-p1':'FASE 1','tag-p2':'FASE 2','tag-fin':'FINAL',
@@ -505,6 +547,7 @@ const T = {
     'lbl-dest':'Ziel hinzufügen','dest-ph':'z. B. Greven, Münster, Saerbeck...',
     'lbl-empty':'Ziele hinzufügen um Routen zu erstellen',
     'btn-full-txt':'Gesamtroute navigieren',
+    'btn-nav-lbl':'Jetzt navigieren','share-btn-lbl':'Route teilen',
     'lbl-obras-sec':'Baustelle B481 Status',
     'obras-hdr-txt':'🚧 Projekt — Greven / Emsdetten',
     'tag-p1':'PHASE 1','tag-p2':'PHASE 2','tag-fin':'FERTIG',
@@ -540,6 +583,7 @@ const T = {
     'lbl-dest':'Add destination','dest-ph':'e.g. Greven, Münster, Saerbeck...',
     'lbl-empty':'Add destinations to generate routes',
     'btn-full-txt':'Navigate full route',
+    'btn-nav-lbl':'Navigate now','share-btn-lbl':'Share route',
     'lbl-obras-sec':'B481 Roadworks Status',
     'obras-hdr-txt':'🚧 Project — Greven / Emsdetten',
     'tag-p1':'PHASE 1','tag-p2':'PHASE 2','tag-fin':'COMPLETE',
@@ -578,6 +622,7 @@ function applyLang(){
   document.documentElement.lang = l;
   document.getElementById('lang-label').textContent = l.toUpperCase();
   const ids = ['h-title','h-sub','lbl-origin','lbl-change','lbl-dest','lbl-empty','btn-full-txt',
+    'btn-nav-lbl','btn-share-lbl',
     'lbl-obras-sec','obras-hdr-txt','tag-p1','tag-p2','tag-fin',
     'btn-strassen','footer-note','admin-sub','admin-pwd-lbl','admin-saved','btn-save-origin',
     'lbl-geo','lbl-or',
@@ -642,18 +687,25 @@ function updateAlert(){
   const sub = document.getElementById('a-sub');
   const altRoutes = document.getElementById('alt-routes');
   const btnWrap   = document.getElementById('btn-full-wrap');
+  const navWrap   = document.getElementById('nav-action-wrap');
   if(phase===1){
     banner.className='p1'; ico.textContent='✕';
     title.textContent=t('alert-p1-t'); sub.textContent=t('alert-p1-s');
-    altRoutes.style.display='block'; if(btnWrap) btnWrap.style.display='none';
+    altRoutes.style.display='block';
+    if(btnWrap) btnWrap.style.display='none';
+    if(navWrap) navWrap.style.display='none';
   } else if(phase===2){
     banner.className='p2'; ico.textContent='⚠';
     title.textContent=t('alert-p2-t'); sub.textContent=t('alert-p2-s');
-    altRoutes.style.display='block'; if(btnWrap) btnWrap.style.display='none';
+    altRoutes.style.display='block';
+    if(btnWrap) btnWrap.style.display='none';
+    if(navWrap) navWrap.style.display='none';
   } else {
     banner.className='ok'; ico.textContent='✓';
     title.textContent=t('alert-ok-t'); sub.textContent=t('alert-ok-s');
-    altRoutes.style.display='none'; if(btnWrap) btnWrap.style.display='block';
+    altRoutes.style.display='none';
+    if(btnWrap) btnWrap.style.display='none';
+    updateNavButtons();
   }
 }
 
@@ -790,6 +842,7 @@ function renderList(){
   if(dests.length===0){
     list.innerHTML = `<div class="empty-state"><span class="empty-icon">🗺</span><span>${t('lbl-empty')}</span></div>`;
     btn.disabled = true;
+    updateNavButtons();
     return;
   }
   btn.disabled = false;
@@ -797,12 +850,21 @@ function renderList(){
     <div class="dest-item">
       <div class="dest-num">${i+1}</div>
       <div class="dest-name">${esc(d)}</div>
-      <div class="dest-actions">
-        <button class="btn-go" onclick="navigateTo(${i})">${t('go-btn')}</button>
-        <button class="btn-share" onclick="shareRoute(${i})" title="Compartir">${t('share-btn')}</button>
-        <button class="btn-del" onclick="removeDest(${i})">✕</button>
-      </div>
+      <button class="btn-del" onclick="removeDest(${i})">✕</button>
     </div>`).join('');
+  updateNavButtons();
+}
+
+function updateNavButtons(){
+  const wrap = document.getElementById('nav-action-wrap');
+  if(!wrap) return;
+  if(dests.length===0){
+    wrap.style.display='none'; return;
+  }
+  wrap.style.display='block';
+  // Update share button text with first destination
+  const shareBtn = document.getElementById('btn-share-main');
+  if(shareBtn) shareBtn.textContent = `📤 ${t('share-btn-lbl')}`;
 }
 
 function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
