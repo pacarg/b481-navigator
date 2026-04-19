@@ -187,18 +187,34 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 .route-alt{
   flex:1;background:var(--bg2);
   border:1px solid var(--border2);border-radius:var(--r);
-  padding:10px 10px;cursor:pointer;
+  padding:12px 11px;cursor:pointer;
   font-family:'Syne',sans-serif;
   text-align:left;transition:all .2s;
 }
-.route-alt:hover{background:var(--bg3);border-color:var(--border);}
-.route-alt-dot{width:8px;height:8px;border-radius:50%;margin-bottom:6px;}
+.route-alt.amber-card{ border-color:rgba(245,166,35,0.35); }
+.route-alt.orange-card{ border-color:rgba(232,148,58,0.35); }
+.route-alt:hover{ background:var(--bg3); }
+.route-alt.amber-card:hover{ border-color:rgba(245,166,35,0.7); }
+.route-alt.orange-card:hover{ border-color:rgba(232,148,58,0.7); }
+.route-alt-header{ display:flex; align-items:center; gap:7px; margin-bottom:6px; }
+.route-alt-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .dot-amber{background:var(--amber);}
 .dot-orange{background:#e8943a;}
-.route-alt-name{font-size:12px;font-weight:700;color:var(--text);line-height:1.3;}
-.route-alt-via{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.4;}
-.route-alt-km{font-size:11px;font-weight:700;margin-top:5px;}
-.route-alt-tag{font-size:10px;color:var(--muted);margin-top:2px;line-height:1.3;}
+.route-alt-km-badge{
+  margin-left:auto;
+  font-size:12px;font-weight:800;
+  padding:2px 7px;border-radius:5px;
+}
+.amber-badge{ background:rgba(245,166,35,0.15); color:var(--amber); }
+.orange-badge{ background:rgba(232,148,58,0.15); color:#e8943a; }
+.route-alt-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.3;}
+.route-alt-via{font-size:11px;color:rgba(180,176,168,0.85);margin-top:3px;line-height:1.4;}
+.route-alt-tag{
+  font-size:10px;margin-top:6px;line-height:1.4;
+  padding:4px 7px;border-radius:5px;
+}
+.amber-tag{ background:rgba(245,166,35,0.08); color:rgba(245,166,35,0.7); }
+.orange-tag{ background:rgba(232,148,58,0.08); color:rgba(232,148,58,0.7); }
 .obras-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-top:14px;}
 .obras-hdr{padding:11px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
 .obras-hdr span{flex:1;font-size:13px;font-weight:600;color:var(--amber);}
@@ -342,19 +358,23 @@ footer a{color:var(--amber);text-decoration:none;}
     </button>
     <!-- Alternativas — pequeñas en fila -->
     <div class="alt-routes-row">
-      <button class="route-alt" onclick="openAltRoute('reckenfeld')">
-        <div class="route-alt-dot dot-amber"></div>
-        <div class="route-alt-name" id="alt2-name">Westen — Reckenfeld</div>
+      <button class="route-alt amber-card" onclick="openAltRoute('reckenfeld')">
+        <div class="route-alt-header">
+          <div class="route-alt-dot dot-amber"></div>
+          <div class="route-alt-name" id="alt2-name">Westen — Reckenfeld</div>
+          <span class="route-alt-km-badge amber-badge">~14 km</span>
+        </div>
         <div class="route-alt-via" id="alt2-desc">L590 → B219 Greven</div>
-        <div class="route-alt-km" style="color:var(--amber);">~14 km</div>
-        <div class="route-alt-tag" id="alt2-tag">Wohngebiet 30/50 km/h</div>
+        <div class="route-alt-tag amber-tag" id="alt2-tag">Wohngebiet 30/50 km/h</div>
       </button>
-      <button class="route-alt" onclick="openAltRoute('schmedehausen')">
-        <div class="route-alt-dot dot-orange"></div>
-        <div class="route-alt-name" id="alt3-name">Osten — Schmedehausen</div>
+      <button class="route-alt orange-card" onclick="openAltRoute('schmedehausen')">
+        <div class="route-alt-header">
+          <div class="route-alt-dot dot-orange"></div>
+          <div class="route-alt-name" id="alt3-name">Osten — Schmedehausen</div>
+          <span class="route-alt-km-badge orange-badge">~18 km</span>
+        </div>
         <div class="route-alt-via" id="alt3-desc">Emsdettener Damm → L588</div>
-        <div class="route-alt-km" style="color:#e8943a;">~18 km</div>
-        <div class="route-alt-tag" id="alt3-tag">Ruhig, enge Straßen</div>
+        <div class="route-alt-tag orange-tag" id="alt3-tag">Ruhig, enge Straßen</div>
       </button>
     </div>
   </div>
