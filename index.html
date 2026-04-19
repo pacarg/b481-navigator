@@ -160,7 +160,21 @@ header{background:var(--bg2);border-bottom:1px solid var(--border);padding:12px 
 .btn-full:hover{opacity:.88;}
 .btn-full:disabled{opacity:.3;cursor:not-allowed;}
 
-/* ─── OBRAS CARD ─── */
+/* ─── RUTAS ALTERNATIVAS ─── */
+#alt-routes{display:none;}
+.alt-routes-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-top:8px;}
+.alt-route-item{padding:11px 14px;border-bottom:1px solid var(--border2);display:flex;align-items:center;gap:10px;}
+.alt-route-item:last-child{border-bottom:none;}
+.alt-route-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.dot-green{background:var(--green);}
+.dot-amber{background:var(--amber);}
+.dot-orange{background:#e8943a;}
+.alt-route-info{flex:1;}
+.alt-route-name{font-size:13px;font-weight:600;color:var(--text);}
+.alt-route-desc{font-size:11px;color:var(--muted);margin-top:2px;line-height:1.4;}
+.alt-route-meta{font-size:10px;margin-top:3px;}
+.btn-alt-go{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;padding:6px 12px;font-size:11px;font-weight:700;color:var(--teal);cursor:pointer;font-family:'Syne',sans-serif;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+.btn-alt-go:hover{background:var(--bg4);border-color:var(--teal);}
 .obras-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;margin-top:14px;}
 .obras-hdr{padding:11px 14px;display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none;}
 .obras-hdr span{flex:1;font-size:13px;font-weight:600;color:var(--amber);}
@@ -287,6 +301,44 @@ footer a{color:var(--amber);text-decoration:none;}
   </button>
 </div>
 
+<!-- RUTAS ALTERNATIVAS — solo visible durante obras -->
+<div class="sec" id="alt-routes">
+  <div class="sec-label" id="lbl-alt-sec">Umleitung wählen</div>
+  <div class="alt-routes-card">
+
+    <div class="alt-route-item">
+      <div class="alt-route-dot dot-green"></div>
+      <div class="alt-route-info">
+        <div class="alt-route-name" id="alt1-name">🟢 Offizielle Route — via Saerbeck</div>
+        <div class="alt-route-desc" id="alt1-desc">B219 → B475. Empfohlen für alle Fahrzeuge und LKW.</div>
+        <div class="alt-route-meta"><span style="color:var(--green);">~22 km</span> &nbsp;·&nbsp; <span style="color:var(--muted);" id="alt1-tag">Zuverlässig, auch bei Stau</span></div>
+      </div>
+      <button class="btn-alt-go" onclick="openAltRoute('saerbeck')">→ Maps</button>
+    </div>
+
+    <div class="alt-route-item">
+      <div class="alt-route-dot dot-amber"></div>
+      <div class="alt-route-info">
+        <div class="alt-route-name" id="alt2-name">🟡 Westen — via Reckenfeld</div>
+        <div class="alt-route-desc" id="alt2-desc">L590 durch Reckenfeld → B219 Greven.</div>
+        <div class="alt-route-meta"><span style="color:var(--amber);">~14 km</span> &nbsp;·&nbsp; <span style="color:var(--muted);" id="alt2-tag">Kürzer, aber Wohngebiet (30/50 km/h)</span></div>
+      </div>
+      <button class="btn-alt-go" onclick="openAltRoute('reckenfeld')">→ Maps</button>
+    </div>
+
+    <div class="alt-route-item">
+      <div class="alt-route-dot dot-orange"></div>
+      <div class="alt-route-info">
+        <div class="alt-route-name" id="alt3-name">🟠 Osten — via Schmedehausen</div>
+        <div class="alt-route-desc" id="alt3-desc">Emsdettener Damm → L588 Schmedehausen → Greven.</div>
+        <div class="alt-route-meta"><span style="color:#e8943a;">~18 km</span> &nbsp;·&nbsp; <span style="color:var(--muted);" id="alt3-tag">Ruhig, enge Straßen, kein Nebel</span></div>
+      </div>
+      <button class="btn-alt-go" onclick="openAltRoute('schmedehausen')">→ Maps</button>
+    </div>
+
+  </div>
+</div>
+
 <!-- OBRAS INFO -->
 <div class="sec">
   <div class="sec-label" id="lbl-obras-sec">Estado de obras B481</div>
@@ -408,7 +460,11 @@ const T = {
     'geo-denied':'Permiso denegado. Escribí la dirección manualmente.',
     'geo-unavail':'Ubicación no disponible. Intentá más tarde.',
     'geo-timeout':'Tiempo agotado. Intentá de nuevo.',
-    'geo-error':'Error al obtener ubicación.','geo-no-support':'Tu navegador no soporta geolocalización.'
+    'geo-error':'Error al obtener ubicación.','geo-no-support':'Tu navegador no soporta geolocalización.',
+    'lbl-alt-sec':'Elegir desvío',
+    'alt1-name':'🟢 Ruta oficial — vía Saerbeck','alt1-desc':'B219 → B475. Recomendada para todos los vehículos y camiones.','alt1-tag':'Confiable, incluso con tráfico',
+    'alt2-name':'🟡 Oeste — vía Reckenfeld','alt2-desc':'L590 por Reckenfeld → B219 Greven.','alt2-tag':'Más corta, pero zona residencial (30/50 km/h)',
+    'alt3-name':'🟠 Este — vía Schmedehausen','alt3-desc':'Emsdettener Damm → L588 Schmedehausen → Greven.','alt3-tag':'Tranquila, calles estrechas, sin niebla'
   },
   de:{
     'h-title':'B481-Navigator','h-sub':'Emsdetten · Baustelle 2026',
@@ -441,7 +497,11 @@ const T = {
     'geo-denied':'Zugriff verweigert. Bitte Adresse eingeben.',
     'geo-unavail':'Standort nicht verfügbar. Später erneut versuchen.',
     'geo-timeout':'Zeitüberschreitung. Erneut versuchen.',
-    'geo-error':'Standortfehler.','geo-no-support':'Dein Browser unterstützt keine Geolokalisierung.'
+    'geo-error':'Standortfehler.','geo-no-support':'Dein Browser unterstützt keine Geolokalisierung.',
+    'lbl-alt-sec':'Umleitung wählen',
+    'alt1-name':'🟢 Offizielle Route — via Saerbeck','alt1-desc':'B219 → B475. Empfohlen für alle Fahrzeuge und LKW.','alt1-tag':'Zuverlässig, auch bei Stau',
+    'alt2-name':'🟡 Westen — via Reckenfeld','alt2-desc':'L590 durch Reckenfeld → B219 Greven.','alt2-tag':'Kürzer, aber Wohngebiet (30/50 km/h)',
+    'alt3-name':'🟠 Osten — via Schmedehausen','alt3-desc':'Emsdettener Damm → L588 Schmedehausen → Greven.','alt3-tag':'Ruhig, enge Straßen, kein Nebel'
   },
   en:{
     'h-title':'B481 Navigator','h-sub':'Emsdetten · Roadworks 2026',
@@ -474,7 +534,11 @@ const T = {
     'geo-denied':'Permission denied. Please type your address.',
     'geo-unavail':'Location unavailable. Try again later.',
     'geo-timeout':'Request timed out. Try again.',
-    'geo-error':'Location error.','geo-no-support':'Your browser does not support geolocation.'
+    'geo-error':'Location error.','geo-no-support':'Your browser does not support geolocation.',
+    'lbl-alt-sec':'Choose detour',
+    'alt1-name':'🟢 Official route — via Saerbeck','alt1-desc':'B219 → B475. Recommended for all vehicles and trucks.','alt1-tag':'Reliable, even in heavy traffic',
+    'alt2-name':'🟡 West — via Reckenfeld','alt2-desc':'L590 through Reckenfeld → B219 Greven.','alt2-tag':'Shorter, but residential area (30/50 km/h)',
+    'alt3-name':'🟠 East — via Schmedehausen','alt3-desc':'Emsdettener Damm → L588 Schmedehausen → Greven.','alt3-tag':'Quiet, narrow roads, avoid fog'
   }
 };
 
@@ -488,7 +552,8 @@ function applyLang(){
     'ml-car','ml-bike','ml-transit','ml-walk','lbl-dest','lbl-empty','btn-full-txt',
     'lbl-obras-sec','obras-hdr-txt','tag-p1','tag-p2','tag-fin',
     'btn-strassen','footer-note','admin-sub','admin-pwd-lbl','admin-saved','btn-save-origin',
-    'lbl-geo','lbl-or'];
+    'lbl-geo','lbl-or',
+    'lbl-alt-sec','alt1-name','alt1-desc','alt1-tag','alt2-name','alt2-desc','alt2-tag','alt3-name','alt3-desc','alt3-tag'];
   ids.forEach(id=>{
     const el = document.getElementById(id);
     if(el) el.textContent = t(id);
@@ -548,16 +613,35 @@ function updateAlert(){
   const ico = document.getElementById('a-ico');
   const title = document.getElementById('a-title');
   const sub = document.getElementById('a-sub');
+  const altRoutes = document.getElementById('alt-routes');
   if(phase===1){
     banner.className='p1'; ico.textContent='✕';
     title.textContent=t('alert-p1-t'); sub.textContent=t('alert-p1-s');
+    altRoutes.style.display='block';
   } else if(phase===2){
     banner.className='p2'; ico.textContent='⚠';
     title.textContent=t('alert-p2-t'); sub.textContent=t('alert-p2-s');
+    altRoutes.style.display='block';
   } else {
     banner.className='ok'; ico.textContent='✓';
     title.textContent=t('alert-ok-t'); sub.textContent=t('alert-ok-s');
+    altRoutes.style.display='none';
   }
+}
+
+/* ═══════════════════════════════════════════════
+   RUTAS ALTERNATIVAS
+═══════════════════════════════════════════════ */
+function openAltRoute(type){
+  const origin = encodeURIComponent(originAddr || 'Emsdetten, Germany');
+  const dest   = encodeURIComponent('Greven, Germany');
+  const avoid  = document.getElementById('avoid-highways').checked ? '&avoid=highways' : '';
+  let waypoint = '';
+  if(type === 'saerbeck')     waypoint = encodeURIComponent('Saerbeck, Germany');
+  if(type === 'reckenfeld')   waypoint = encodeURIComponent('Reckenfeld, Greven, Germany');
+  if(type === 'schmedehausen')waypoint = encodeURIComponent('Schmedehausen, Emsdetten, Germany');
+  const url = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${dest}&waypoints=${waypoint}&travelmode=driving${avoid}`;
+  window.open(url, '_blank');
 }
 
 /* ═══════════════════════════════════════════════
