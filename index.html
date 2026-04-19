@@ -343,7 +343,6 @@ footer a{color:var(--azul);text-decoration:none;font-weight:600;}
     <div class="mode-btn active" id="mode-driving" onclick="setMode('driving')">🚗<span class="mode-label" id="ml-car">Auto</span></div>
     <div class="mode-btn" id="mode-bicycling" onclick="setMode('bicycling')">🚲<span class="mode-label" id="ml-bike">Bici</span></div>
     <div class="mode-btn" id="mode-transit" onclick="setMode('transit')">🚌<span class="mode-label" id="ml-transit">Bus/Tren</span></div>
-    <div class="mode-btn" id="mode-walking" onclick="setMode('walking')">🚶<span class="mode-label" id="ml-walk">A pie</span></div>
   </div>
   <div class="options-row" id="highway-row">
     <span class="toggle-label" id="lbl-avoid">Evitar autopistas</span>
@@ -642,7 +641,7 @@ function applyLang(){
   });
   document.getElementById('dest-input').placeholder = t('dest-ph');
   document.getElementById('origin-input').placeholder = t('origin-ph');
-  document.getElementById('btn-full-ico').textContent = currentMode === 'bicycling' ? '🚲' : currentMode === 'transit' ? '🚌' : currentMode === 'walking' ? '🚶' : '🚗';
+  document.getElementById('btn-full-ico').textContent = currentMode === 'bicycling' ? '🚲' : currentMode === 'transit' ? '🚌' : '🚗';
   updateAlert();
   renderList();
 }
@@ -824,7 +823,7 @@ function setMode(m){
   });
   const hwRow = document.getElementById('highway-row');
   hwRow.style.display = (m==='driving') ? 'flex' : 'none';
-  const ico = m==='bicycling'?'🚲':m==='transit'?'🚌':m==='walking'?'🚶':'🚗';
+  const ico = m==='bicycling'?'🚲':m==='transit'?'🚌':'🚗';
   document.getElementById('btn-full-ico').textContent = ico;
 }
 
