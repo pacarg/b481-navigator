@@ -336,23 +336,6 @@ footer a{color:var(--azul);text-decoration:none;font-weight:600;}
   </div>
 </div>
 
-<!-- TRANSPORT MODE -->
-<div class="sec">
-  <div class="sec-label" id="lbl-mode">Modo de transporte</div>
-  <div class="mode-row">
-    <div class="mode-btn active" id="mode-driving" onclick="setMode('driving')">🚗<span class="mode-label" id="ml-car">Auto</span></div>
-    <div class="mode-btn" id="mode-bicycling" onclick="setMode('bicycling')">🚲<span class="mode-label" id="ml-bike">Bici</span></div>
-    <div class="mode-btn" id="mode-transit" onclick="setMode('transit')">🚌<span class="mode-label" id="ml-transit">Bus/Tren</span></div>
-  </div>
-  <div class="options-row" id="highway-row">
-    <span class="toggle-label" id="lbl-avoid">Evitar autopistas</span>
-    <label class="toggle-wrap">
-      <input type="checkbox" id="avoid-highways">
-      <span class="toggle-slider"></span>
-    </label>
-  </div>
-</div>
-
 <!-- DESTINOS -->
 <div class="sec">
   <div class="sec-label" id="lbl-dest">Agregar destino</div>
@@ -508,8 +491,6 @@ const T = {
   es:{
     'h-title':'Navegador B481','h-sub':'Emsdetten · Obras 2026',
     'lbl-origin':'Punto de inicio','lbl-change':'Cambiar',
-    'lbl-mode':'Modo de transporte','lbl-avoid':'Evitar autopistas',
-    'ml-car':'Auto','ml-bike':'Bici','ml-transit':'Bus/Tren','ml-walk':'A pie',
     'lbl-dest':'Agregar destino','dest-ph':'Ej: Greven, Münster, Saerbeck...',
     'lbl-empty':'Agregá destinos para generar rutas',
     'btn-full-txt':'Navegar ruta completa',
@@ -545,8 +526,6 @@ const T = {
   de:{
     'h-title':'B481-Navigator','h-sub':'Emsdetten · Baustelle 2026',
     'lbl-origin':'Startpunkt','lbl-change':'Ändern',
-    'lbl-mode':'Verkehrsmittel','lbl-avoid':'Autobahn vermeiden',
-    'ml-car':'Auto','ml-bike':'Rad','ml-transit':'Bus/Bahn','ml-walk':'Fuß',
     'lbl-dest':'Ziel hinzufügen','dest-ph':'z. B. Greven, Münster, Saerbeck...',
     'lbl-empty':'Ziele hinzufügen um Routen zu erstellen',
     'btn-full-txt':'Gesamtroute navigieren',
@@ -582,8 +561,6 @@ const T = {
   en:{
     'h-title':'B481 Navigator','h-sub':'Emsdetten · Roadworks 2026',
     'lbl-origin':'Starting point','lbl-change':'Change',
-    'lbl-mode':'Transport mode','lbl-avoid':'Avoid motorways',
-    'ml-car':'Car','ml-bike':'Bike','ml-transit':'Bus/Train','ml-walk':'Walk',
     'lbl-dest':'Add destination','dest-ph':'e.g. Greven, Münster, Saerbeck...',
     'lbl-empty':'Add destinations to generate routes',
     'btn-full-txt':'Navigate full route',
@@ -624,8 +601,7 @@ function applyLang(){
   const l = langs[langIdx];
   document.documentElement.lang = l;
   document.getElementById('lang-label').textContent = l.toUpperCase();
-  const ids = ['h-title','h-sub','lbl-origin','lbl-change','lbl-mode','lbl-avoid',
-    'ml-car','ml-bike','ml-transit','ml-walk','lbl-dest','lbl-empty','btn-full-txt',
+  const ids = ['h-title','h-sub','lbl-origin','lbl-change','lbl-dest','lbl-empty','btn-full-txt',
     'lbl-obras-sec','obras-hdr-txt','tag-p1','tag-p2','tag-fin',
     'btn-strassen','footer-note','admin-sub','admin-pwd-lbl','admin-saved','btn-save-origin',
     'lbl-geo','lbl-or',
@@ -641,7 +617,6 @@ function applyLang(){
   });
   document.getElementById('dest-input').placeholder = t('dest-ph');
   document.getElementById('origin-input').placeholder = t('origin-ph');
-  document.getElementById('btn-full-ico').textContent = currentMode === 'bicycling' ? '🚲' : currentMode === 'transit' ? '🚌' : '🚗';
   updateAlert();
   renderList();
 }
@@ -812,20 +787,8 @@ function showGeoStatus(cls, msg){
 
 document.getElementById('origin-input').addEventListener('keydown', e => { if(e.key==='Enter') saveOrigin(); });
 
-/* ═══════════════════════════════════════════════
-   TRANSPORT MODE
-═══════════════════════════════════════════════ */
-let currentMode = 'driving';
-function setMode(m){
-  currentMode = m;
-  ['driving','bicycling','transit','walking'].forEach(mo=>{
-    document.getElementById('mode-'+mo).classList.toggle('active', mo===m);
-  });
-  const hwRow = document.getElementById('highway-row');
-  hwRow.style.display = (m==='driving') ? 'flex' : 'none';
-  const ico = m==='bicycling'?'🚲':m==='transit'?'🚌':'🚗';
-  document.getElementById('btn-full-ico').textContent = ico;
-}
+/* Modo fijo: siempre driving */
+const currentMode = 'driving';
 
 /* ═══════════════════════════════════════════════
    DESTINATIONS
