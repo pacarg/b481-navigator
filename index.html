@@ -366,24 +366,14 @@ footer a{color:var(--azul);text-decoration:none;font-weight:600;}
       <span id="lbl-empty">Agregá destinos para generar rutas</span>
     </div>
   </div>
-  <!-- BOTÓN NAVEGAR + COMPARTIR — visible cuando hay destinos -->
+  <!-- BOTÓN RUTA COMPLETA — visible cuando hay destinos y NO hay obras -->
   <div id="btn-full-wrap">
     <button class="btn-full" id="btn-full-route" onclick="navigateFull()" disabled>
       <span id="btn-full-ico">🚗</span> <span id="btn-full-txt">Navegar ruta completa</span>
     </button>
   </div>
 
-  <!-- BLOQUE ACCIÓN PRINCIPAL — visible cuando hay destinos y NO hay obras -->
-  <div id="nav-action-wrap" style="display:none; margin-top:10px;">
-    <button class="btn-nav-main" onclick="navigateFull()">
-      🚗 <span id="btn-nav-lbl">Jetzt navigieren</span>
-    </button>
-    <button class="btn-nav-share" id="btn-share-main" onclick="shareRoute(0)">
-      📤 <span id="btn-share-lbl">Route teilen</span>
-    </button>
-  </div>
-
-  <!-- RUTAS ALTERNATIVAS — reemplaza botón amarillo durante obras -->
+  <!-- RUTAS ALTERNATIVAS — visible durante obras -->
   <div id="alt-routes">
     <div class="alt-routes-col">
 
@@ -411,6 +401,16 @@ footer a{color:var(--azul);text-decoration:none;font-weight:600;}
         <span class="route-card-tag tag-orange" id="alt3-tag">Ruhig, enge Straßen, kein Nebel</span>
       </button>
 
+    </div>
+
+    <!-- BOTONES ACCIÓN — después de elegir ruta -->
+    <div id="nav-action-wrap" style="display:none; margin-top:12px;">
+      <button class="btn-nav-main" onclick="navigateFull()">
+        🚗 <span id="btn-nav-lbl">Jetzt navigieren</span>
+      </button>
+      <button class="btn-nav-share" id="btn-share-main" onclick="shareRoute(0)">
+        📤 <span id="btn-share-lbl">Route teilen</span>
+      </button>
     </div>
   </div>
 </div>
@@ -687,19 +687,18 @@ function updateAlert(){
   const sub = document.getElementById('a-sub');
   const altRoutes = document.getElementById('alt-routes');
   const btnWrap   = document.getElementById('btn-full-wrap');
-  const navWrap   = document.getElementById('nav-action-wrap');
   if(phase===1){
     banner.className='p1'; ico.textContent='✕';
     title.textContent=t('alert-p1-t'); sub.textContent=t('alert-p1-s');
     altRoutes.style.display='block';
     if(btnWrap) btnWrap.style.display='none';
-    if(navWrap) navWrap.style.display='none';
+    updateNavButtons();
   } else if(phase===2){
     banner.className='p2'; ico.textContent='⚠';
     title.textContent=t('alert-p2-t'); sub.textContent=t('alert-p2-s');
     altRoutes.style.display='block';
     if(btnWrap) btnWrap.style.display='none';
-    if(navWrap) navWrap.style.display='none';
+    updateNavButtons();
   } else {
     banner.className='ok'; ico.textContent='✓';
     title.textContent=t('alert-ok-t'); sub.textContent=t('alert-ok-s');
